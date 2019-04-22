@@ -9,12 +9,19 @@
       padding: 0;
       font-family: sans-serif;
     }
-
+body{
+  background-color: #EFEAE5;
+}
     h1 {
       text-align: center;
       padding: 0.5em auto;
     }
-
+/*h3{
+  text-align: center;
+  padding:2em;
+  align-self: stretch;
+  clear: both;
+}*/
     p {
       padding: 0.5em 3em 0.5em 3em;
     }
@@ -54,6 +61,7 @@
       height: 32px;
       background-color: rgba(0, 0, 0, 0.5);
       cursor: pointer;
+
     }
 
     #lb {
@@ -95,187 +103,175 @@
   <script type="text/javascript" src="jquery-3.1.1.js"></script>
   <script type="text/javascript">
     $(document).ready(() => {
-          // $(document).ready(function() {
+      // $(document).ready(function() {
 
-          $('#slideshow').append('<div class="overlay"></div>')
-          $('.overlay').append('<div id = "controls"></div>')
-          $('#controls').append('<div id = "lb" class = "controlButton"><img src="arrowLeft.png"></div>')
-          $('#controls').append('<div id = "rb" class = "controlButton"><img src="arrowRight.png"></div>')
-          $('#controls').append('<div id = "cap"></div>')
-          //need to make sure z-index of controls keeps it on top
-          $('.overlay').hide()
+      $('#slideshow').append('<div class="overlay"></div>')
+      $('.overlay').append('<div id = "controls"></div>')
+      $('#controls').append('<div id = "lb" class = "controlButton"><img src="previousArrow.png"></div>')
+      $('#controls').append('<div id = "rb" class = "controlButton"><img src="nextArrow.png"></div>')
+      $('#controls').append('<div id = "cap"></div>')
+      //need to make sure z-index of controls keeps it on top
+      $('.overlay').hide()
 
-          $('p.pic').click(function(e) {
-            e.preventDefault()
-            const imagePath = $(this).children('a').attr('href')
-            $('#cap').html($(this).children('a').attr('title'))
+      $('p.pic').click(function(e) {
+        e.preventDefault()
+        const imagePath = $(this).children('a').attr('href')
+        $('#cap').html($(this).children('a').attr('title'))
 
-            console.log(imagePath);
+        console.log(imagePath);
 
-            $('.overlay').append('<img src ="' + imagePath + '"class = "big">')
-            $('.big').on('load', function() {
+        $('.overlay').append('<img src ="' + imagePath + '"class = "big">')
+        $('.big').on('load', function() {
+          resizeImage()
+          //use the size data from the image to position the controls
 
-              //use the size data from the image to position the controls
+          // $('#controls').css('width', $('.big').width())
+          // $('#cap').css({
+          //   width: $('.big').width(),
+          //   top: $('.big').height() / 2 - $('#cap').height() + $('.controlButton').height() / 2
+          //}) //end css stuff
+        }) //end load image
 
-              $('#controls').css('width', $('.big').width())
-              $('#cap').css({
-                width: $('.big').width(),
-                top: $('.big').height() / 2 - $('#cap').height() + $('.controlButton').height() / 2
-              }) //end css stuff
-            }) //end load image
+        $('.overlay').fadeIn('slow')
 
-            $('.overlay').fadeIn('slow')
+      }) //end pick click
 
-          }) //end pick click
-
-          $('.overlay').click(function(e) {
-            clearBigImage()
-          }) //end click overlay
+      $('.overlay').click(function(e) {
+        clearBigImage()
+      }) //end click overlay
 
 
-          const pathList = []
-          const titleList = []
-          const totalImages = $('#slideshow .pic').length
-          for (let i = 0; i < totalImages; i++) {
-            pathList[i] = $('#slideshow a').eq(i).attr('href')
-            titleList[i] = $('#slideshow a').eq(i).attr('title')
+      const pathList = []
+      const titleList = []
+      const totalImages = $('#slideshow .pic').length
+      for (let i = 0; i < totalImages; i++) {
+        pathList[i] = $('#slideshow a').eq(i).attr('href')
+        titleList[i] = $('#slideshow a').eq(i).attr('title')
+      }
+      let currentImageNumber
+      //
+      $('#lb').click(function(e) {
+        e.preventDefault()
+        e.stopPropagation()
+        currentImageNumber = pathList.indexOf($('.big').attr('src'))
+        currentImageNumber--;
+        if (currentImageNumber >= 0) {
+          //       //update image
+          updateImageAndTitle()
+        } else {
+          clearBigImage()
+        }
+      }) //end lb click
+
+      $('#rb').click(function(e) {
+        e.preventDefault()
+        e.stopPropagation()
+        currentImageNumber = pathList.indexOf($('.big').attr('src'))
+        currentImageNumber++;
+        if (currentImageNumber < totalImages) {
+          updateImageAndTitle()
+        } else {
+          clearBigImage()
+        }
+
+      }) //end rb click
+
+      function updateImageAndTitle() {
+        $('.big, #controls').fadeOut(500, function() {
+          $('.big').attr('src', pathList[currentImageNumber])
+          $('#cap').html(titleList[currentImageNumber])
+        })
+        $('.big, #controls').fadeIn(500)
+      }
+
+      function clearBigImage() {
+        $('.overlay').fadeOut('slow')
+        $('.big').remove()
+      } //end clearBigImage
+
+      $(window).resize(function() {
+        resizeImage()
+      })
+
+      function resizeImage() {
+        $('.big').css({
+          width: "",
+          height: ""
+        })
+        const cWidth = $(window).width()
+        const cHeight = $(window).height()
+        const iWidth = $('.big').width()
+        const iHeight = $('.big').height()
+        let ratio = 1
+
+        let newHeight;
+        let newWidth;
+        // $('.pic, #cap, #controls').each(function() {
+        if (iHeight >= iWidth) {
+          newHeight = cHeight * 0.9
+          ratio = cHeight / iHeight;
+          newWidth = iWidth * ratio;
+          // $(.pic).css('height', iHeight * ratio);
+          if (newWidth > cWidth * 0.9) {
+            ratio = cWidth / newWidth
+            newWidth = cWidth * 0.9
+            newHeight *= ratio
           }
-          let currentImageNumber
-          //
-          $('#lb').click(function(e) {
-            e.preventDefault()
-            e.stopPropagation()
-            currentImageNumber = pathList.indexOf($('.big').attr('src'))
-            currentImageNumber--;
-            if (currentImageNumber >= 0) {
-              //       //update image
-              updateImageAndTitle()
-            } else {
-              clearBigImage()
-            }
-          }) //end lb click
+        } else if (iHeight < iWidth) {
+          newWidth = cWidth * 0.9
+          ratio = cWidth / iWidth
+          newHeight = iHeight * ratio
 
-          $('#rb').click(function(e) {
-            e.preventDefault()
-            e.stopPropagation()
-            currentImageNumber = pathList.indexOf($('.big').attr('src'))
-            currentImageNumber++;
-            if (currentImageNumber < totalImages) {
-              updateImageAndTitle()
-            } else {
-              clearBigImage()
-            }
-
-          }) //end rb click
-
-          function updateImageAndTitle() {
-            $('.big, #controls').fadeOut(500, function() {
-              $('.big').attr('src', pathList[currentImageNumber])
-              $('#cap').html(titleList[currentImageNumber])
-            })
-            $('.big, #controls').fadeIn(500)
+          if (newHeight > cHeight * 0.9) {
+            ratio = cHeight / newHeight
+            newHeight = cHeight * 0.9
+            newWidth *= ratio
           }
+          // $(.pic).css('height', cHeight);
+          // $(.pic).css('width', iWidth * ratio);
 
-          function clearBigImage() {
-            $('.overlay').fadeOut('slow')
-            $('.big').remove()
-          } //end clearBigImage
-          $(window).resize(function() {
-            resizeImage()
-          })
+        } else {
+          console.log("Something went wrong with resize");
+        }
+        $('.big').css({
+          height: newHeight,
+          width: newWidth
+        })
+        $('#controls').css('width', newWidth)
+        $('#cap').css({
+          top: newHeight / 2 - $('#cap').height() + $('.controlButton').height() / 2,
+          width: newWidth
+        })
+      } //resize
 
-          function resizeImage() {
 
-            const cWidth = $(window).width()
-            const cHeight = $(window).height()
-            const iWidth = $('.big').width()
-            const iHeight = $('.big').height()
-            let ratio = 1
-            $('.pic, #cap, #controls').each(function() {
-            if (iWidth > cWidth) {
-              ratio = cWidth / iWidth;
-              $(.pic).css('width', cWidth);
-              $(.pic).css('height', iHeight * ratio);
-              height = height * ratio;
-            } else {
-              if (iHeight > cHeight) {
-                ratio = cHeight / iHeight
-                $(.pic).css('height', cHeight);
-                $(.pic).css('width', iWidth * ratio);
-                width = width * ratio;
-              }
-            }
-            })
-          }) //end ready
+    }) //end ready
   </script>
 </head>
 
 <body>
-  <h1>Slideshows are FUN!</h1>
+  <h1>Art Work Created by Me</h1>
   <div id="slideshow">
     <p class="pic">
-      <a href="cats.jpg" title="fred is a goofball.">
-        <img src="Cats_Small.jpg">
+      <a href="largeImage1.png" title="A little fun with Illustrator patterns.">
+        <img src="smallImage1.png">
       </a>
     </p>
     <p class="pic">
-      <a href="cats5.jpg" title="shaggy is always hungry.">
-        <img src="cats5_Small.jpg">
+      <a href="largeImage2.png" title="A little fun with Illustrator Patterns and shapes.">
+        <img src="smallImage2.png">
       </a>
     </p>
     <p class="pic">
-      <a href="Vegas.jpg" title="scooby is not a dog.">
-        <img src="Vegas_Small.jpg">
+      <a href="largeImage3.jpg" title="Aerial Rocky Mountain View">
+        <img src="smallImage3.jpg">
       </a>
     </p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-      dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing
-      elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-      dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-      dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing
-      elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-      dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-      dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing
-      elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-      dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-      dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing
-      elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-      dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-      dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing
-      elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-      dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-      dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing
-      elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-      dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-      dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing
-      elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-      dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-      dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing
-      elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-      dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-      dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing
-      elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-      dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-      dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing
-      elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-      dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-      dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing
-      elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-      dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-      dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing
-      elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-      dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    <!-- <h3>Playing on Illustrator</h3> -->
+    <p>Since I have started school I have learned so much about the different Adobe products. Two of the three images that I placed into my slideshow were created on Illustrator. Illustrator is a vector based computer art program. My favorite thing to do
+      on Illustrator is to play around with the different patterns in the swatches and see what kind of fun abstract art I can create.</p>
+    <!-- <h3></h3> -->
+    <!-- <p></p> -->
   </div>
 </body>
 
