@@ -18,9 +18,7 @@
     }
 
     h1 {
-      font-size: 5em;
-      font-family: 'Monoton', cursive;
-      color: rgb(5, 219, 96);
+
       box-sizing: border-box;
       background-color: rgba(0, 0, 0, 0.6);
       text-shadow: 10px, 10px white;
@@ -31,8 +29,7 @@
     }
 
     h3 {
-      font-family: 'Monoton', cursive;
-      font-size: 1.5em;
+
       text-align: center;
       padding: 2em;
       align-self: stretch;
@@ -78,7 +75,7 @@
       /* translate center method */
       /* works best when applied to opject itself */
       position: absolute;
-      top: 60%;
+      top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
 
@@ -86,26 +83,56 @@
 
     .pic {
       padding: 0;
+      padding-bottom: 2em;
+      padding-top: -2em;
+
     }
 
-    .small2 {
-      margin-right: 3.5em;
-    }
 
-    .small1 {
-      margin-top: -4.8em;
-      align-items: center;
-      /*margin-left: 1.5em;*/
-    }
 
     .small {
       filter: drop-shadow(0px 10px 4px rgba(0, 0, 0, 0.4));
-    }
-
+      padding: 1px;
+      border: 1px solid #021a40;
+      background-color: rgb(5, 219, 96);
+}
     .text {
       font-kerning: 12em;
     }
 
+    .p {
+      padding-bottom: 2em;
+    }
+
+    .color3 {
+      font-size: 3em;
+      font-family: 'Monoton', cursive;
+      color: black;
+      text-decoration: none;
+      -webkit-transition: color 2s;
+      transition: color 2s;
+    }
+    .color3:hover{
+      color: rgb(9, 138, 179);
+    }
+
+    .tColor {
+      font-size: 3em;
+      font-family: 'Monoton', cursive;
+      color: rgb(5, 219, 96);
+      text-decoration: none;
+      -webkit-transition: color 2s;
+      transition: color 2s;
+    }
+
+    .tColor:hover {
+      color: rgb(9, 138, 179);
+    }
+.box{
+  box-sizing: border-box;
+  background-color: rgba(0, 0, 0, 0.1);
+  
+}
     #lb,
     #rb {
       width: 32px;
@@ -141,7 +168,6 @@
       justify-content: center;
       box-sizing: border-box;
     }
-
   </style>
   <script type="text/javascript" src="jquery-3.1.1.js"></script>
   <script type="text/javascript">
@@ -246,23 +272,23 @@
         let newWidth;
         // $('.pic, #cap, #controls').each(function() {
         if (iHeight >= iWidth) {
-          newHeight = cHeight * 0.9
+          newHeight = cHeight * 0.5
           ratio = cHeight / iHeight;
           newWidth = iWidth * ratio;
           // $(.pic).css('height', iHeight * ratio);
-          if (newWidth > cWidth * 0.9) {
+          if (newWidth > cWidth * 0.5) {
             ratio = cWidth / newWidth
-            newWidth = cWidth * 0.9
+            newWidth = cWidth * 0.5
             newHeight *= ratio
           }
         } else if (iHeight < iWidth) {
-          newWidth = cWidth * 0.9
+          newWidth = cWidth * 0.5
           ratio = cWidth / iWidth
           newHeight = iHeight * ratio
 
-          if (newHeight > cHeight * 0.9) {
+          if (newHeight > cHeight * 0.5) {
             ratio = cHeight / newHeight
-            newHeight = cHeight * 0.9
+            newHeight = cHeight * 0.5
             newWidth *= ratio
           }
           // $(.pic).css('height', cHeight);
@@ -289,7 +315,7 @@
 
 <body>
   <h1>
-    Danelle's Light Box Assignment
+  <a class="tColor"href="#"> Danelle's Light Box Assignment</a>
   </h1>
 
   <div id="slideshow">
@@ -312,11 +338,18 @@
   </div>
 
   <div class="cover">
-    <h3 class="text">Playing on Illustrator</h3>
-    <p class="text">Since I have started school I have learned so much about the different Adobe products. Two of the three images that I placed into my slideshow were created on Illustrator. Illustrator is a vector based computer art program. My favorite thing to do
-      on Illustrator is to play around with the different patterns in the swatches and see what kind of fun abstract art I can create.</p>
-    <!-- <h3></h3> -->
-    <!-- <p></p> -->
+    <div class="text">
+<div class="box">
+      <h3><a class="color3" href="#">Illustrator  &amp;  Photoshop  Fun</a></h3>
+    </div>
+      <p class="p">Since starting school I have created various projects using Illustrator and Photoshop. My favorite program out of the two is Illustrator. I love the versatility and flexability within this program.I love to use it to create images for my web backgrounds,
+        other content for my sites as well as other printed artwork. The best thing about both photoshop and illustrator is that you can flip flop between both programs when creating content. There are multiple functions of each that correspond with the
+        other. I love to use it to create images for my web backgrounds, other content for my sites as well as other printed artwork.</p>
+
+      <p class="p">Photoshop isn't so bad either. When I first started school and learning about Photoshop it was a bit of a struggle, but now that I'm getting towards the end of my program I have started to really like this program as well. I love to bring my photos
+        into a program called Lightroom before going into Photoshop, because I like to make my minor adjustments and then I will make my more intricate and finite adjustments in Photoshop. </p>
+
+    </div>
   </div>
 
 </body>
