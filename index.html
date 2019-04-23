@@ -3,33 +3,65 @@
 
 <head>
   <title>lightbox</title>
+  <link href="https://fonts.googleapis.com/css?family=M+PLUS+1p|Monoton" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Monoton" rel="stylesheet">
   <style type="text/css">
     * {
       margin: 0;
       padding: 0;
       font-family: sans-serif;
     }
-body{
-  background-color: #EFEAE5;
-}
+
+    body {
+      /*background-color: #EFEAE5;*/
+      background: -webkit-linear-gradient(bottom, rgba(255, 255, 255, 1) 0%, rgba(232, 204, 215, 1) 22%, rgba(227, 118, 162, 1) 44%, rgba(222, 29, 103, 1) 66%, rgba(115, 23, 115, 1) 100%);
+    }
+
     h1 {
+      font-size: 5em;
+      font-family: 'Monoton', cursive;
+      color: rgb(5, 219, 96);
+      box-sizing: border-box;
+      background-color: rgba(0, 0, 0, 0.6);
+      text-shadow: 10px, 10px white;
       text-align: center;
       padding: 0.5em auto;
+      margin-bottom: 2em;
+      margin-top: 1em;
     }
-/*h3{
-  text-align: center;
-  padding:2em;
-  align-self: stretch;
-  clear: both;
-}*/
+
+    h3 {
+      font-family: 'Monoton', cursive;
+      font-size: 1.5em;
+      text-align: center;
+      padding: 2em;
+      align-self: stretch;
+      clear: both;
+      /*margin-top: 3em;*/
+    }
+
     p {
-      padding: 0.5em 3em 0.5em 3em;
+      /*padding: 2em 5em;*/
+      text-align: justify;
+      font-size: 2em;
+      font-family: 'M PLUS 1p', sans-serif;
+      font-style: oblique;
     }
 
     #slideshow {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-around;
+
+    }
+
+    .cover {
+      background: white;
+      opacity: 0.5;
+      padding-left: 5em;
+      padding-right: 5em;
+
+
     }
 
     .overlay {
@@ -46,13 +78,32 @@ body{
       /* translate center method */
       /* works best when applied to opject itself */
       position: absolute;
-      top: 50%;
+      top: 60%;
       left: 50%;
       transform: translate(-50%, -50%);
+
     }
 
     .pic {
       padding: 0;
+    }
+
+    .small2 {
+      margin-right: 3.5em;
+    }
+
+    .small1 {
+      margin-top: -4.8em;
+      align-items: center;
+      /*margin-left: 1.5em;*/
+    }
+
+    .small {
+      filter: drop-shadow(0px 10px 4px rgba(0, 0, 0, 0.4));
+    }
+
+    .text {
+      font-kerning: 12em;
     }
 
     #lb,
@@ -64,13 +115,6 @@ body{
 
     }
 
-    #lb {
-      /* float: left; */
-    }
-
-    #rb {
-      /* float: right; */
-    }
 
     #controls {
       z-index: 1000;
@@ -90,15 +134,14 @@ body{
       font-size: 2em;
       font-family: sans-serif;
       position: absolute;
-      /* text-align: center; */
       height: 2em;
       /* use flex to align things both vertically and horizontally */
       display: flex;
       align-items: center;
       justify-content: center;
       box-sizing: border-box;
-      /* border: 1px solid yellow; */
     }
+
   </style>
   <script type="text/javascript" src="jquery-3.1.1.js"></script>
   <script type="text/javascript">
@@ -124,11 +167,6 @@ body{
         $('.big').on('load', function() {
           resizeImage()
           //use the size data from the image to position the controls
-
-          // $('#controls').css('width', $('.big').width())
-          // $('#cap').css({
-          //   width: $('.big').width(),
-          //   top: $('.big').height() / 2 - $('#cap').height() + $('.controlButton').height() / 2
           //}) //end css stuff
         }) //end load image
 
@@ -160,7 +198,7 @@ body{
           updateImageAndTitle()
         } else {
           clearBigImage()
-        }
+        } //end else
       }) //end lb click
 
       $('#rb').click(function(e) {
@@ -172,7 +210,7 @@ body{
           updateImageAndTitle()
         } else {
           clearBigImage()
-        }
+        } //end else
 
       }) //end rb click
 
@@ -250,29 +288,37 @@ body{
 </head>
 
 <body>
-  <h1>Art Work Created by Me</h1>
+  <h1>
+    Danelle's Light Box Assignment
+  </h1>
+
   <div id="slideshow">
     <p class="pic">
       <a href="largeImage1.png" title="A little fun with Illustrator patterns.">
-        <img src="smallImage1.png">
+        <img class="small small1"src="smallImage1.png">
       </a>
     </p>
+
     <p class="pic">
       <a href="largeImage2.png" title="A little fun with Illustrator Patterns and shapes.">
-        <img src="smallImage2.png">
+        <img class="small small2" src="smallImage2.png">
       </a>
     </p>
     <p class="pic">
       <a href="largeImage3.jpg" title="Aerial Rocky Mountain View">
-        <img src="smallImage3.jpg">
+        <img class="small small2" src="smallImage3.jpg">
       </a>
     </p>
-    <!-- <h3>Playing on Illustrator</h3> -->
-    <p>Since I have started school I have learned so much about the different Adobe products. Two of the three images that I placed into my slideshow were created on Illustrator. Illustrator is a vector based computer art program. My favorite thing to do
+  </div>
+
+  <div class="cover">
+    <h3 class="text">Playing on Illustrator</h3>
+    <p class="text">Since I have started school I have learned so much about the different Adobe products. Two of the three images that I placed into my slideshow were created on Illustrator. Illustrator is a vector based computer art program. My favorite thing to do
       on Illustrator is to play around with the different patterns in the swatches and see what kind of fun abstract art I can create.</p>
     <!-- <h3></h3> -->
     <!-- <p></p> -->
   </div>
+
 </body>
 
 </html>
