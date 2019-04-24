@@ -3,172 +3,11 @@
 
 <head>
   <title>lightbox</title>
+  <!-- style -->
   <link href="https://fonts.googleapis.com/css?family=M+PLUS+1p|Monoton" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Monoton" rel="stylesheet">
-  <style type="text/css">
-    * {
-      margin: 0;
-      padding: 0;
-      font-family: sans-serif;
-    }
-
-    body {
-      /*background-color: #EFEAE5;*/
-      background: -webkit-linear-gradient(bottom, rgba(255, 255, 255, 1) 0%, rgba(232, 204, 215, 1) 22%, rgba(227, 118, 162, 1) 44%, rgba(222, 29, 103, 1) 66%, rgba(115, 23, 115, 1) 100%);
-    }
-
-    h1 {
-
-      box-sizing: border-box;
-      background-color: rgba(0, 0, 0, 0.6);
-      text-shadow: 10px, 10px white;
-      text-align: center;
-      padding: 0.5em auto;
-      margin-bottom: 2em;
-      margin-top: 1em;
-    }
-
-    h3 {
-
-      text-align: center;
-      padding: 2em;
-      align-self: stretch;
-      clear: both;
-      /*margin-top: 3em;*/
-    }
-
-    p {
-      /*padding: 2em 5em;*/
-      text-align: justify;
-      font-size: 2em;
-      font-family: 'M PLUS 1p', sans-serif;
-      font-style: oblique;
-    }
-
-    #slideshow {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-around;
-
-    }
-
-    .cover {
-      background: white;
-      opacity: 0.5;
-      padding-left: 5em;
-      padding-right: 5em;
-
-
-    }
-
-    .overlay {
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.6);
-      /* fixed prevents the image and overlay from scrolling */
-      position: fixed;
-      left: 0;
-      top: 0;
-    }
-
-    .big {
-      /* translate center method */
-      /* works best when applied to opject itself */
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-
-    }
-
-    .pic {
-      padding: 0;
-      padding-bottom: 2em;
-      padding-top: -2em;
-
-    }
-
-
-
-    .small {
-      filter: drop-shadow(0px 10px 4px rgba(0, 0, 0, 0.4));
-      padding: 1px;
-      border: 1px solid #021a40;
-      background-color: rgb(5, 219, 96);
-}
-    .text {
-      font-kerning: 12em;
-    }
-
-    .p {
-      padding-bottom: 2em;
-    }
-
-    .color3 {
-      font-size: 3em;
-      font-family: 'Monoton', cursive;
-      color: black;
-      text-decoration: none;
-      -webkit-transition: color 1s;
-      transition: color 1s;
-    }
-    .color3:hover{
-      color: rgb(9, 138, 179);
-    }
-
-    .tColor {
-      font-size: 3em;
-      font-family: 'Monoton', cursive;
-      color: rgb(5, 219, 96);
-      text-decoration: none;
-      -webkit-transition: color 1s;
-      transition: color 1s;
-    }
-
-    .tColor:hover {
-      color: rgb(9, 138, 179);
-    }
-.box{
-  box-sizing: border-box;
-  background-color: rgba(0, 0, 0, 0.1);
-
-}
-    #lb,
-    #rb {
-      width: 32px;
-      height: 32px;
-      background-color: rgba(0, 0, 0, 0.5);
-      cursor: pointer;
-
-    }
-
-
-    #controls {
-      z-index: 1000;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      /* use flex to spread out the buttons that are attached to this object */
-      /* this eliminates the need to use float */
-      display: flex;
-      justify-content: space-between;
-    }
-
-    #cap {
-      color: rgb(255, 255, 255);
-      background-color: rgba(0, 0, 0, 0.5);
-      font-size: 2em;
-      font-family: sans-serif;
-      position: absolute;
-      height: 2em;
-      /* use flex to align things both vertically and horizontally */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-sizing: border-box;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
+  <!-- javascript -->
   <script type="text/javascript" src="jquery-3.1.1.js"></script>
   <script type="text/javascript">
     $(document).ready(() => {
@@ -266,29 +105,29 @@
         const cHeight = $(window).height()
         const iWidth = $('.big').width()
         const iHeight = $('.big').height()
-        let ratio = 1
+        let ratio = 1;
 
         let newHeight;
         let newWidth;
         // $('.pic, #cap, #controls').each(function() {
         if (iHeight >= iWidth) {
-          newHeight = cHeight * 0.5
+          newHeight = cHeight * 0.9
           ratio = cHeight / iHeight;
           newWidth = iWidth * ratio;
           // $(.pic).css('height', iHeight * ratio);
-          if (newWidth > cWidth * 0.5) {
+          if (newWidth > cWidth * 0.9) {
             ratio = cWidth / newWidth
-            newWidth = cWidth * 0.5
+            newWidth = cWidth * 0.9
             newHeight *= ratio
           }
         } else if (iHeight < iWidth) {
-          newWidth = cWidth * 0.5
+          newWidth = cWidth * 0.9
           ratio = cWidth / iWidth
           newHeight = iHeight * ratio
 
-          if (newHeight > cHeight * 0.5) {
+          if (newHeight > cHeight * 0.9) {
             ratio = cHeight / newHeight
-            newHeight = cHeight * 0.5
+            newHeight = cHeight * 0.9
             newWidth *= ratio
           }
           // $(.pic).css('height', cHeight);
