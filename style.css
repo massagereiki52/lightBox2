@@ -6,7 +6,6 @@
 
 body {
   background: -webkit-linear-gradient(bottom, rgba(255, 255, 255, 1) 0%, rgba(232, 204, 215, 1) 22%, rgba(227, 118, 162, 1) 44%, rgba(222, 29, 103, 1) 66%, rgba(115, 23, 115, 1) 100%);
-  
 }
 
 h1 {
@@ -20,7 +19,6 @@ h1 {
 }
 
 h3 {
-
   text-align: center;
   padding: 2em;
   align-self: stretch;
@@ -36,15 +34,11 @@ p {
   font-style: oblique;
 }
 
-
-
 .cover {
   background: white;
   opacity: 0.9;
   padding-left: 5em;
   padding-right: 5em;
-
-
 }
 
 .overlay {
@@ -64,17 +58,53 @@ p {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-
 }
 
 .pic {
+  width: 100px;
+  height: 100px;
+  background-color: red;
+  position: relative;
+  -webkit-animation-name: pic;
+  /* Safari 4.0 - 8.0 */
+  -webkit-animation-duration: 4s;
+  /* Safari 4.0 - 8.0 */
+  animation-name: example;
+  animation-duration: 2s;
   padding: 0;
   padding-bottom: 2em;
   padding-top: -2em;
-
+}
+.spin{
+    -webkit-animation: spin 4s linear;
+}
+@-webkit-keyframes spin {
+    0%  {-webkit-transform: rotate(0deg);}
+    100% {-webkit-transform: rotate(360deg);}
+}
+@-webkit-keyframes pic {
+  0% {
+    left: -1000px;
+    top: 0px;
+  }
+  100% {
+    left: 100px;
+    top: 0px;
+  }
 }
 
+/* Standard syntax */
 
+@keyframes example {
+  0% {
+    left: -1000px;
+    top: 0px;
+  }
+  100% {
+    left: 100px;
+    top: 0px;
+  }
+}
 
 .small {
   filter: drop-shadow(0px 10px 4px rgba(0, 0, 0, 0.4));
@@ -82,6 +112,7 @@ p {
   border: 1px solid #021a40;
   background-color: rgb(5, 219, 96);
 }
+
 .text {
   font-kerning: 12em;
 }
@@ -98,7 +129,8 @@ p {
   -webkit-transition: color 1s;
   transition: color 1s;
 }
-.color3:hover{
+
+.color3:hover {
   color: rgb(9, 138, 179);
 }
 
@@ -116,22 +148,22 @@ p {
 }
 
 #slideshow {
-  width:100%;
-  height:600px;
+  width: 100%;
+  height: 600px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-
 }
 
-#lb{
+#lb {
   width: 26px;
   height: 32px;
   background-color: rgba(0, 0, 0, 0.5);
   cursor: pointer;
 }
+
 #rb {
-  width:66px;
+  width: 66px;
   height: 32px;
   background-color: rgba(0, 0, 0, 0.5);
   cursor: pointer;
@@ -139,14 +171,14 @@ p {
 
 #controls {
   z-index: 1000;
-  position:absolute;
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   /* use flex to spread out the buttons that are attached to this object */
   /* this eliminates the need to use float */
-  display:inline-flex;
-  justify-content:space-between;
+  display: inline-flex;
+  justify-content: space-between;
 }
 
 #cap {
@@ -155,7 +187,7 @@ p {
   font-size: 1.75em;
   font-family: 'M PLUS 1p', sans-serif;
   font-style: oblique;
-  position:absolute;
+  position: absolute;
   height: 2em;
   /* use flex to align things both vertically and horizontally */
   display: flex;
